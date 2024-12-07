@@ -1,0 +1,51 @@
+services:
+  db:
+    image: mysql:8
+    container_name: wordpress_db
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    networks:
+      - wp-network
+
+  wordpress:
+    build:
+      context: .
+      dockerfile: ./docker/wp.dockerfile
+    container_name: wordpress_fpm
+    depends_on:
+      - db
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    restart: always
+    networks:
+      - wp-network
+
+  nginx:
+    image: nginx:1.27.3
+    container_name: wordpress_nginx
+    depends_on:
+      - wordpress
+    ports:
+      - "8080:80"
+    volumes:
+      - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    restart: always
+    networks:
+      - wp-network
+
+volumes:
+  db_data:
+
+
+networks:
+  wp-network:
+    driver: bridge
