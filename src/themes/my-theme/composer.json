@@ -1,0 +1,17 @@
+{
+    "name": "mattias/my-theme",
+    "autoload": {
+        "psr-4": {
+            "Mattias\\MyTheme\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "MKieler",
+            "email": "mki@golearn.dk"
+        }
+    ],
+    "require": {
+        "timber/timber": "^2.3"
+    }
+}

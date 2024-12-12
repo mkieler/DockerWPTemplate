@@ -7,3 +7,6 @@
  * Description: My Plugin is a lightweight, responsive WordPress plugin.
  * 
  */
+
+echo 'Hello from my-plugin!';
+die();
